@@ -101,8 +101,7 @@ def showtable(ID: int , Password:str):
     temp =[]
     for x in cursor.fetchall():
         temp.append(x)
-    print(type(temp))
-    print(len(temp))
+    conn.close()
     return temp
 
 def sql(ID:int , Password:str , Query:str):
@@ -118,6 +117,7 @@ def sql(ID:int , Password:str , Query:str):
         for y in x:
             temp.append(y)
     conn.commit()
+    conn.close()
     return temp
 
 @app.post('/add' , response_class = HTMLResponse)
@@ -136,12 +136,15 @@ def add(request : Request , c_ID:int = Form()):
     check = sql(ID,Pd,"Select Count(*) From Subscription Where type=1 AND c_id={}".format(c_ID))
     if(check[0] >= c_data[4]):
         return "人數已滿的課程不可加選"+redirect
-    check =sql(ID,Pd,"Select Day,Section From Course Cross Join TimeTable \
-            Where Course.ID=TimeTable.ID AND Course.ID={} AND NOT EXISTS ( \
-            Select Day,Section From Subscription Cross Join Course Cross Join TimeTable\
-            Where Course.ID=TimeTable.ID AND Course.ID=Subscription.c_id AND s_id = {}\
-            ); ".format(c_ID,ID))
-    if(len(check) != 0):
+    check =sql(ID,Pd,"Select x.Day,x.Section FROM \
+        (Select Day,Section From TimeTable cross join Course ON Course.ID=TimeTable.ID \
+        Cross JOIN Subscription ON Subscription.c_id = Course.ID Where s_id={}) as x \
+        INNER JOIN ( Select Day,Section From TimeTable Cross Join Course ON Course.ID = TimeTable.ID \
+        Where Course.ID = {}) as y ON x.Day=y.Day AND x.Section=y.Section; ".format(ID,c_ID))
+    print(len(check))
+    if(len(check) > 0):
+        for x in check:
+            print(x)
         return "不可加選衝堂的課程"+redirect
     check = sql(ID,Pd,"Select ID From Course Cross Join Subscription \
         Where Course.ID=Subscription.c_id \

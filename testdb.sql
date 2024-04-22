@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost
--- 產生時間： 2024 年 04 月 22 日 04:24
+-- 產生時間： 2024 年 04 月 22 日 06:02
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.2.12
 
@@ -47,10 +47,13 @@ INSERT INTO `Course` (`ID`, `Name`, `Credit`, `Required`, `Quota`, `Dept`, `Year
 (3, '0_quota', 3, 0, 0, 'IECS', 1),
 (4, 'English_advanced', 3, 1, 25, 'LANG', 2),
 (5, 'Assembly', 3, 1, 80, 'IECS', 2),
+(6, 'DBMS', 3, 1, 80, 'IECS', 2),
+(7, 'FYP', 30, 1, 200, 'IECS', 3),
 (8, 'Linear Algebra', 3, 1, 100, 'IECS', 1),
 (9, 'Calcus(I)', 3, 1, 110, 'IECS', 1),
 (10, 'Wireless Network', 3, 0, 50, 'IECS', 4),
-(11, 'Software Testing', 3, 0, 70, 'IECS', 2);
+(11, 'Software Testing', 3, 0, 70, 'IECS', 2),
+(12, 'Programme', 2, 1, 80, 'IECS', 1);
 
 -- --------------------------------------------------------
 
@@ -93,6 +96,7 @@ INSERT INTO `Subscription` (`s_id`, `c_id`, `type`) VALUES
 (12345678, 1, 1),
 (12345678, 2, 1),
 (12345678, 5, 1),
+(12345678, 8, 1),
 (12345678, 9, 1),
 (12345678, 10, 1),
 (12345678, 11, 1);
@@ -123,9 +127,13 @@ INSERT INTO `TimeTable` (`ID`, `Day`, `Section`) VALUES
 (5, 3, 3),
 (5, 3, 4),
 (5, 3, 5),
-(6, 2, 8),
-(6, 2, 9),
-(6, 2, 10),
+(6, 2, 3),
+(6, 2, 4),
+(6, 2, 5),
+(7, 5, 11),
+(8, 2, 8),
+(8, 2, 9),
+(8, 2, 10),
 (9, 5, 4),
 (9, 5, 5),
 (9, 5, 6),
@@ -134,7 +142,12 @@ INSERT INTO `TimeTable` (`ID`, `Day`, `Section`) VALUES
 (10, 3, 8),
 (11, 1, 5),
 (11, 1, 6),
-(11, 1, 7);
+(11, 1, 7),
+(12, 2, 3),
+(12, 2, 4),
+(12, 3, 4),
+(12, 3, 5),
+(12, 3, 6);
 
 --
 -- 已傾印資料表的索引
@@ -172,7 +185,7 @@ ALTER TABLE `TimeTable`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `Course`
 --
 ALTER TABLE `Course`
-  MODIFY `ID` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
